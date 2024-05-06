@@ -1,0 +1,13 @@
+#cloud-config
+network:
+  version: 2
+  ethernets:
+    ens3:
+      addresses:
+        - 10.1.2.100/24
+      nameservers:
+        addresses: 
+          - 10.1.2.1
+      routes:
+        - to: default
+          via: 10.1.2.1

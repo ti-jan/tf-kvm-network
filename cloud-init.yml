@@ -1,0 +1,42 @@
+#cloud-config
+
+# Usuários e grupos
+users:
+  - name: gean
+    sudo: ALL=(ALL) NOPASSWD:ALL
+    groups: users, sudo
+    shell: /bin/bash
+    ssh-authorized-keys:
+      - ${file("github.pub")}
+
+# Desativa a senha para todos os usuários, exceto root
+disable_root: false
+ssh_pwauth: false
+
+# Configuração da senha do root permitida apenas no console
+chpasswd:
+  list: |
+    root:root
+  expire: False
+
+# Garantir que o acesso por senha esteja desativado para todos, exceto para o console
+system_info:
+  default_user:
+    lock_passwd: true
+
+# Configurações de segurança para SSH
+sshd_config:
+  PermitRootLogin: prohibit-password
+  PasswordAuthentication: no
+  ChallengeResponseAuthentication: no
+  UsePAM: yes
+  PermitEmptyPasswords: no
+
+# Pacotes a serem instalados
+packages:
+  - python
+  - qemu-guest-agent
+
+# Configurações de atualização de pacotes
+package_update: true
+package_upgrade: true
